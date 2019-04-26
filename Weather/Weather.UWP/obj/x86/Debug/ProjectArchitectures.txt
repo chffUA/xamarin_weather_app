@@ -1,0 +1,1 @@
+C:\Users\Carlos\source\repos\Weather\Weather\Weather.UWP\Weather.UWP.csproj;x86
