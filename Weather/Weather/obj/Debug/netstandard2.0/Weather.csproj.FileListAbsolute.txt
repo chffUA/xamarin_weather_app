@@ -11,3 +11,4 @@ C:\Users\Carlos\source\repos\Weather\Weather\Weather\obj\Debug\netstandard2.0\Xa
 C:\Users\Carlos\source\repos\Weather\Weather\Weather\obj\Debug\netstandard2.0\Weather.dll
 C:\Users\Carlos\source\repos\Weather\Weather\Weather\obj\Debug\netstandard2.0\Weather.pdb
 C:\Users\Carlos\source\repos\Weather\Weather\Weather\obj\Debug\netstandard2.0\StatsPage.xaml.g.cs
+C:\Users\Carlos\source\repos\Weather\Weather\Weather\obj\Debug\netstandard2.0\SelectionModal.xaml.g.cs

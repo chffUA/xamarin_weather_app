@@ -7,13 +7,15 @@ namespace Weather
     class Entry
     {
         public string Image { get; }
-        public string Name { get; set; }
-        public string Type { get; set; }
+        public string Name { get; }
+        public string Date { get; }
+        public int Index { get;  }
 
-        public Entry(string n, string t)
+        public Entry(string n, string d, int i)
         {
             Name = n;
-            Type = t;
+            Date = d;
+            Index = i;
             Image = "http://pngimg.com/uploads/house/house_PNG50.png";
         }
     }

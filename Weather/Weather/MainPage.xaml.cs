@@ -9,15 +9,15 @@ using Xamarin.Forms;
 namespace Weather
 {
 
-    [DesignTimeVisible(true)]
     public partial class MainPage : ContentPage
     {
 
         public MainPage()
         {
             List<Entry> entries = new List<Entry>();
-            entries.Add(new Entry("n", "t"));
-            entries.Add(new Entry("n2", "t2"));
+            entries.Add(new Entry("Add +", "", 0));
+            entries.Add(new Entry("Porto", DateTime.Now.ToString(), 1));
+            entries.Add(new Entry("Lisboa", DateTime.Now.ToString(), 2));
             InitializeComponent();
             list.ItemsSource = entries;
         }
@@ -25,9 +25,17 @@ namespace Weather
         public void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             ListView lv = (ListView)sender;
+            Entry entry = (Entry)lv.SelectedItem;
 
-            // assuiming Club has an Id property
-            Application.Current.MainPage = new NavigationPage(new StatsPage(lv.SelectedItem));
+            if (entry.Index==0)
+            {
+                Navigation.PushModalAsync(new SelectionModal());
+            }
+            else
+            {
+                Application.Current.MainPage = new NavigationPage(new StatsPage(entry));
+            }
+            
         }
     }
 }

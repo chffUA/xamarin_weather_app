@@ -16,6 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="SelectionModal.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="StatsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
