@@ -13,13 +13,23 @@ namespace Weather
     public partial class SelectionModal : ContentPage
     {
         private readonly string[] choices = { "Porto", "Lisboa", "Coimbra" };
+        private MainPage mainPage;
 
-        public SelectionModal()
+        public SelectionModal(MainPage m)
         {
             InitializeComponent();
+            mainPage = m;
 
             foreach (string c in choices)
-                picker.Items.Add(c);
+                if (!mainPage.IsEntry(c))
+                    picker.Items.Add(c);
+        }
+            
+        public void PopModal(object sender, EventArgs e)
+        {
+            if (picker.SelectedIndex>=0)
+                mainPage.AddModalSelection((string)picker.SelectedItem);
+            Navigation.PopModalAsync();
         }
     }
 }

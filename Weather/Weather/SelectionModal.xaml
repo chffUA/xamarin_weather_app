@@ -11,7 +11,7 @@
         <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
             <Label Text="should be just a dialog box and not an entire page" FontSize="Medium" FontAttributes="Bold" />
             <Picker x:Name="picker"/>
-            <Button x:Name="okbtn" Text="button" />
+            <Button x:Name="okbtn" Text="button" Clicked="PopModal" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
