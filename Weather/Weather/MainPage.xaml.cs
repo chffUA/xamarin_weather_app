@@ -12,15 +12,35 @@ namespace Weather
 
     public partial class MainPage : ContentPage
     {
+        ObservableCollection<Entry> entries;
 
-        ObservableCollection<Entry> entries = new ObservableCollection<Entry>();
+        private void SaveList()
+        {
+            Application.Current.Properties["list"] = entries;
+            Application.Current.SavePropertiesAsync();
+        }
+
+        private void LoadList()
+        {
+            if (Application.Current.Properties.ContainsKey("list"))
+            {
+                var lst = Application.Current.Properties["list"];
+                entries = (ObservableCollection<Entry>)lst;
+            }
+        }
 
         public MainPage()
-        {       
-            entries.Add(new Entry("Add +", "", 0));
-            entries.Add(new Entry("Porto", DateTime.Now.ToString(), 1));
-            entries.Add(new Entry("Lisboa", DateTime.Now.ToString(), 2));
+        {
             InitializeComponent();
+            LoadList();
+            if (entries == null)
+            {
+                entries = new ObservableCollection<Entry>();
+                entries.Add(new Entry("Add +", "", 0));
+                entries.Add(new Entry("Porto", DateTime.Now.ToString(), 1));
+                entries.Add(new Entry("Lisboa", DateTime.Now.ToString(), 1));
+            }
+            SaveList();
             list.ItemsSource = entries;
         }
 
@@ -36,13 +56,14 @@ namespace Weather
         public void AddModalSelection(string city)
         {
             entries.Add(new Entry(city, "Never", entries.Count));
+            SaveList();
         }
 
-        public void RemoveEntry(object sender, EventArgs e) {
-
-            //int idx = ((Entry)list.SelectedItem).Index;
-            //var x = (ListView)((Button)sender).Parent;
-            //entries.RemoveAt(idx);
+        public void RemoveEntry(object sender, EventArgs e)
+        {
+            var city = (Entry)((Xamarin.Forms.Button)sender).BindingContext;
+            entries.Remove(city);
+            SaveList();
         }
 
         public void OnItemSelected(object sender, EventArgs e)
@@ -58,7 +79,6 @@ namespace Weather
             {
                 Navigation.PushAsync(new NavigationPage(new StatsPage(entry)));
             }
-            
         }
     }
 }

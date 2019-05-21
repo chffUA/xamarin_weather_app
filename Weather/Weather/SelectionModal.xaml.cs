@@ -12,7 +12,7 @@ namespace Weather
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SelectionModal : ContentPage
     {
-        private readonly string[] choices = { "Porto", "Lisboa", "Coimbra" };
+        private readonly string[] choices = { "Porto", "Lisboa", "Coimbra", "Aveiros", "Faro", "Braga" };
         private MainPage mainPage;
 
         public SelectionModal(MainPage m)
