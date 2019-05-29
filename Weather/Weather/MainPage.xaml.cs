@@ -13,32 +13,62 @@ namespace Weather
     public partial class MainPage : ContentPage
     {
         ObservableCollection<Entry> entries;
+        Repository repos = new Repository();
 
         private void SaveList()
         {
-            Application.Current.Properties["list"] = entries;
-            Application.Current.SavePropertiesAsync();
+            repos.DeleteEntries();
+            foreach(var entry in entries)
+            {
+                repos.InsertEntry(entry);
+            }
         }
 
         private void LoadList()
         {
-            if (Application.Current.Properties.ContainsKey("list"))
+            try
             {
-                var lst = Application.Current.Properties["list"];
-                entries = (ObservableCollection<Entry>)lst;
+                var lst = repos.GetEntries();
+                entries = new ObservableCollection<Entry>();
+                foreach (var itm in lst)
+                {
+                    entries.Add(itm);
+                }
+            }
+            catch(Exception ex)
+            {
+                var s = ex.Message;
             }
         }
 
         public MainPage()
         {
+            try
+            {
+                repos.CreateDatabase();
+            }
+            catch(Exception ex)
+            {
+                var s = ex.Message;
+                
+            }
             InitializeComponent();
             LoadList();
-            if (entries == null)
+            if (entries.Count==0)
             {
-                entries = new ObservableCollection<Entry>();
-                entries.Add(new Entry("Add +", "", 0));
-                entries.Add(new Entry("Porto", DateTime.Now.ToString(), 1));
-                entries.Add(new Entry("Lisboa", DateTime.Now.ToString(), 1));
+                try
+                {
+                    entries = new ObservableCollection<Entry>();
+                    entries.Add(new Entry("Add +", "", 0));
+                    var itm = new Entry("Porto", DateTime.Now.ToString(), 1);
+                    entries.Add(itm);
+                    itm = new Entry("Lisboa", DateTime.Now.ToString(), 1);
+                    entries.Add(itm);
+                }
+                catch(Exception ex)
+                {
+                    var s = ex.Message;
+                }
             }
             SaveList();
             list.ItemsSource = entries;
@@ -55,7 +85,8 @@ namespace Weather
 
         public void AddModalSelection(string city)
         {
-            entries.Add(new Entry(city, "Never", entries.Count));
+            Entry newEntry = new Entry(city, "Never", entries.Count);
+            entries.Add(newEntry);
             SaveList();
         }
 
