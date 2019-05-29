@@ -4,19 +4,36 @@ using System.Text;
 
 namespace Weather
 {
-    class Entry
+    public class Entry
     {
         public string Image { get; }
         public string Name { get; }
-        public string Date { get; }
+        public DateTime Date { get; set; }
         public int Index { get;  }
 
-        public Entry(string n, string d, int i)
+        public string LastChecked
+        { get
+            {
+                if (Date == DateTime.MinValue) return "Last Checked: Never";
+                else return "Last Checked: " + Date.ToString();
+            }
+        }
+
+        public Entry(string n, DateTime d, int i) //forced date
         {
             Name = n;
             Date = d;
             Index = i;
             Image = "http://pngimg.com/uploads/house/house_PNG50.png";
         }
+
+        public Entry(string n, int i) //current date
+        {
+            Name = n;
+            Date = DateTime.MinValue;
+            Index = i;
+            Image = "http://pngimg.com/uploads/house/house_PNG50.png";
+        }
+
     }
 }

@@ -14,7 +14,7 @@ namespace Weather
     {
         ObservableCollection<Entry> entries;
 
-        private void SaveList()
+        public void SaveList()
         {
             Application.Current.Properties["list"] = entries;
             Application.Current.SavePropertiesAsync();
@@ -36,11 +36,10 @@ namespace Weather
             if (entries == null)
             {
                 entries = new ObservableCollection<Entry>();
-                entries.Add(new Entry("Add +", "", 0));
-                entries.Add(new Entry("Porto", DateTime.Now.ToString(), 1));
-                entries.Add(new Entry("Lisboa", DateTime.Now.ToString(), 1));
+                AddEntry("Porto");
+                AddEntry("Lisboa");
             }
-            SaveList();
+            //SaveList();
             list.ItemsSource = entries;
         }
 
@@ -53,15 +52,28 @@ namespace Weather
             return false;
         }
 
-        public void AddModalSelection(string city)
+        public void TouchEntry(Entry e)
         {
-            entries.Add(new Entry(city, "Never", entries.Count));
+            int idx = entries.IndexOf(e);
+            entries.Insert(idx, new Entry(e.Name, DateTime.Now, idx));
+            entries.Remove(e);
             SaveList();
+        }
+
+        public void AddEntry(string city)
+        {
+            entries.Add(new Entry(city, entries.Count));
+            SaveList();
+        }
+
+        public void VisitSelectionModal(object sender, EventArgs e)
+        {
+            Navigation.PushModalAsync(new SelectionModal(this));
         }
 
         public void RemoveEntry(object sender, EventArgs e)
         {
-            var city = (Entry)((Xamarin.Forms.Button)sender).BindingContext;
+            var city = (Entry)((Button)sender).BindingContext;
             entries.Remove(city);
             SaveList();
         }
@@ -70,15 +82,8 @@ namespace Weather
         {
             ListView lv = (ListView)sender;
             Entry entry = (Entry)lv.SelectedItem;
-
-            if (entry.Index==0)
-            {
-                Navigation.PushModalAsync(new SelectionModal(this));
-            }
-            else
-            {
-                Navigation.PushAsync(new NavigationPage(new StatsPage(entry)));
-            }
+            Navigation.PushModalAsync(new NavigationPage(new StatsPage(entry, this)));
         }
+
     }
 }
