@@ -15,7 +15,7 @@ namespace Weather
         ObservableCollection<Entry> entries;
         Repository repos = new Repository();
 
-        private void SaveList()
+        public void SaveList()
         {
             repos.DeleteEntries();
             foreach(var entry in entries)
@@ -56,19 +56,9 @@ namespace Weather
             LoadList();
             if (entries.Count==0)
             {
-                try
-                {
-                    entries = new ObservableCollection<Entry>();
-                    entries.Add(new Entry("Add +", "", 0));
-                    var itm = new Entry("Porto", DateTime.Now.ToString(), 1);
-                    entries.Add(itm);
-                    itm = new Entry("Lisboa", DateTime.Now.ToString(), 1);
-                    entries.Add(itm);
-                }
-                catch(Exception ex)
-                {
-                    var s = ex.Message;
-                }
+                entries = new ObservableCollection<Entry>();
+                AddEntry("Porto");
+                AddEntry("Lisboa");
             }
             SaveList();
             list.ItemsSource = entries;
@@ -83,16 +73,28 @@ namespace Weather
             return false;
         }
 
-        public void AddModalSelection(string city)
+        public void TouchEntry(Entry e)
         {
-            Entry newEntry = new Entry(city, "Never", entries.Count);
-            entries.Add(newEntry);
+            int idx = entries.IndexOf(e);
+            entries.Insert(idx, new Entry(e.Name, DateTime.Now, idx));
+            entries.Remove(e);
             SaveList();
+        }
+
+        public void AddEntry(string city)
+        {
+            entries.Add(new Entry(city, entries.Count));
+            SaveList();
+        }
+
+        public void VisitSelectionModal(object sender, EventArgs e)
+        {
+            Navigation.PushModalAsync(new SelectionModal(this));
         }
 
         public void RemoveEntry(object sender, EventArgs e)
         {
-            var city = (Entry)((Xamarin.Forms.Button)sender).BindingContext;
+            var city = (Entry)((Button)sender).BindingContext;
             entries.Remove(city);
             SaveList();
         }
@@ -101,15 +103,8 @@ namespace Weather
         {
             ListView lv = (ListView)sender;
             Entry entry = (Entry)lv.SelectedItem;
-
-            if (entry.Index==0)
-            {
-                Navigation.PushModalAsync(new SelectionModal(this));
-            }
-            else
-            {
-                Navigation.PushAsync(new NavigationPage(new StatsPage(entry)));
-            }
+            Navigation.PushModalAsync(new NavigationPage(new StatsPage(entry, this)));
         }
+
     }
 }

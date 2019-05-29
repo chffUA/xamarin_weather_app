@@ -9,9 +9,10 @@
     </ContentPage.Padding>
     <ContentPage.Content>
         <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-            <Label Text="should be just a dialog box and not an entire page" FontSize="Medium" FontAttributes="Bold" />
+            <Label Text="Select a city from the dropdown list" FontSize="Medium" FontAttributes="Bold" />
             <Picker x:Name="picker"/>
-            <Button x:Name="okbtn" Text="button" Clicked="PopModal" />
+            <Button x:Name="okbtn" Text="Add" Clicked="AddAndPopModal" />
+            <Button x:Name="nobtn" Text="Nevermind" Clicked="PopModal" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

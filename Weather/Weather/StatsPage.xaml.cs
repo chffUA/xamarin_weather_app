@@ -20,13 +20,16 @@ namespace Weather
         private XElement xml;
         private string r1;
         private string r2;
+        private MainPage mainPage;
 
-        public StatsPage(object e)
+        public StatsPage(Entry e, MainPage m)
         {
             InitializeComponent();
-            entry = (Entry)e;
             title.Text = "Loading...";
+            entry = e;
+            mainPage = m;          
             FetchFromAPI(entry.Name);
+            mainPage.TouchEntry(e);
         }
 
         public async void FetchFromAPI(string city)
@@ -45,8 +48,8 @@ namespace Weather
             img.Source = "https:" + c.Element("condition").Element("icon").Value;
             flavor.Text = c.Element("condition").Element("text").Value;
 
-            req.Text = relativeTime(l.Element("localtime_epoch").Value);
-            col.Text = relativeTime(c.Element("last_updated_epoch").Value);
+            req.Text = RelativeTime(l.Element("localtime_epoch").Value);
+            col.Text = RelativeTime(c.Element("last_updated_epoch").Value);
             temp.Text = String.Format("{0} ºC / {1} ºF", c.Element("temp_c").Value, c.Element("temp_f").Value);
             prec.Text = String.Format("{0} mm. / {1} in.", c.Element("precip_mm").Value, c.Element("precip_in").Value);
             wind.Text = String.Format("{0} km/h / {1} mph ({2})", c.Element("wind_kph").Value, c.Element("wind_mph").Value, c.Element("wind_dir").Value);
@@ -70,10 +73,10 @@ namespace Weather
 
         public void GoBack(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new NavigationPage(new MainPage()));
+            Navigation.PopModalAsync();
         }
 
-        private string relativeTime(string unixTime)
+        private string RelativeTime(string unixTime)
         {
             long now = (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
             long diff = now - long.Parse(unixTime);
@@ -103,8 +106,8 @@ namespace Weather
         private void OnTimedEvent(object sender, System.Timers.ElapsedEventArgs e)
         {
             if (xml == null) return;
-            r1 = relativeTime(xml.Element("location").Element("localtime_epoch").Value);
-            r2 = relativeTime(xml.Element("current").Element("last_updated_epoch").Value);
+            r1 = RelativeTime(xml.Element("location").Element("localtime_epoch").Value);
+            r2 = RelativeTime(xml.Element("current").Element("last_updated_epoch").Value);
 
             Action updater = () => { UpdateGUI(); };
             Device.BeginInvokeOnMainThread(updater);

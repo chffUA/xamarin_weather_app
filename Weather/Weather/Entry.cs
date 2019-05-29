@@ -5,44 +5,40 @@ using System.Text;
 
 namespace Weather
 {
-    class Entry : IEquatable<Entry>
+    public class Entry
     {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
         public string Image { get; set; }
         public string Name { get; set; }
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
         public int Index { get; set; }
-
+        
         public Entry() { }
 
-        public Entry(string n, string d, int i)
+        public string LastChecked
+        { get
+            {
+                if (Date == DateTime.MinValue) return "Last Checked: Never";
+                else return "Last Checked: " + Date.ToString();
+            }
+        }
+
+        public Entry(string n, DateTime d, int i) //forced date
         {
             Name = n;
             Date = d;
             Index = i;
             Image = "http://pngimg.com/uploads/house/house_PNG50.png";
         }
-
-        public Entry Copy()
+        
+        public Entry(string n, int i) //current date
         {
-            var newItem = new Entry();
-            newItem.ID = ID;
-            newItem.Image = Image;
-            newItem.Name = Name;
-            newItem.Date = Date;
-            newItem.Index = Index;
-            return newItem;
+            Name = n;
+            Date = DateTime.MinValue;
+            Index = i;
+            Image = "http://pngimg.com/uploads/house/house_PNG50.png";
         }
 
-        public bool Equals(Entry other)
-        {
-            if (other == null)
-                return false;
-            if (ID == other.ID)
-                return true;
-            else
-                return false;
-        }
     }
 }

@@ -5,21 +5,26 @@
              x:Class="Weather.MainPage">
 
     <StackLayout>
-        <Label Text="Welcome to Xamarin.Forms!" 
+        <Label Text="Welcome to Xamarin Weather!" 
                    HorizontalOptions="Center"
-                   VerticalOptions="CenterAndExpand" />
-            <ListView  x:Name="list" RowHeight="60" ItemTapped="OnItemSelected">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
+                   VerticalOptions="CenterAndExpand"
+               />
+        <ListView  x:Name="list" RowHeight="60" ItemTapped="OnItemSelected">
+            <ListView.Header>
+                <Button x:Name="addbtn"  Text="Add a new location"  Clicked="VisitSelectionModal"/>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
                             <StackLayout Orientation="Horizontal" HorizontalOptions="Fill" BackgroundColor="LightCyan">
-                                <Image Source="{Binding Image}" HorizontalOptions="End" AbsoluteLayout.LayoutBounds="250.25, 0.25, 50, 50 "/>
+                                <Image Source="{Binding Image}" AbsoluteLayout.LayoutBounds="250.25, 0.25, 50, 50 "/>
                                 <StackLayout Orientation="Vertical">
                                     <Label Text = "{Binding Name}" FontSize="24" AbsoluteLayout.LayoutBounds="0.25, 0.25, 400, 40"/>
-                                    <Label Text = "{Binding Type}" AbsoluteLayout.LayoutBounds="50, 35, 200, 25"/>
+                                    <Label Text = "{Binding LastChecked}" AbsoluteLayout.LayoutBounds="50, 35, 200, 25"/>
                                 </StackLayout>
-                                <Button x:Name="delbtn"  Text="Remove"  Clicked="RemoveEntry"  />
-                            </StackLayout>
+                            <Button x:Name="delbtn" Text="Remove" HorizontalOptions="EndAndExpand"  Clicked="RemoveEntry">
+                            </Button>
+                        </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
