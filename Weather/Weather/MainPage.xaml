@@ -7,7 +7,9 @@
     <StackLayout>
         <Label Text="Welcome to Xamarin Weather!" 
                    HorizontalOptions="Center"
-                   VerticalOptions="CenterAndExpand"
+                   VerticalOptions="Center"
+               Margin="30"
+               FontSize="Large"
                />
         <ListView  x:Name="list" RowHeight="60" ItemTapped="OnItemSelected">
             <ListView.Header>
